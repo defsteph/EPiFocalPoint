@@ -1,0 +1,1 @@
+NuGet.exe pack ImageResizer.Plugins.EPiFocalPoint.csproj -OutputDirectory "Build" -Build -Properties Configuration=Release
