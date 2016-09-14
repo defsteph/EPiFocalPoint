@@ -6,7 +6,7 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 	[EditorDescriptorRegistration(TargetType = typeof(FocalPoint))]
 	public class FocalPointEditorDescriptor : EditorDescriptor {
 		public FocalPointEditorDescriptor() {
-			ClientEditingClass = "focal-point.focalpoint.editor";
+			ClientEditingClass = "focal-point/focalpoint/editor";
 		}
 	}
 }
