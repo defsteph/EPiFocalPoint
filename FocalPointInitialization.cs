@@ -32,6 +32,7 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 		private void InitializeEventHooks(InitializationEngine context) {
 			if(!eventsAttached) {
 				var contentEvents = context.Locate.Advanced.GetInstance<IContentEvents>();
+				contentEvents.CreatingContent += SavingImage;
 				contentEvents.SavingContent += SavingImage;
 				eventsAttached = true;
 			}
@@ -71,6 +72,7 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 		}
 		private void UninitializeEventHooks(InitializationEngine context) {
 			var contentEvents = context.Locate.Advanced.GetInstance<IContentEvents>();
+			contentEvents.CreatingContent -= SavingImage;
 			contentEvents.SavingContent -= SavingImage;
 			eventsAttached = false;
 		}
