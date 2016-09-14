@@ -19,6 +19,9 @@
 				</properties>
 			</imagedata>
 		</contenttypes>
+		<focalpoint>
+			<clearbutton>Remove focal point</clearbutton>
+		</focalpoint>
 	</language>
 	<language name="svenska" id="sv">
 		<contenttypes>
@@ -39,5 +42,8 @@
 				</properties>
 			</imagedata>
 		</contenttypes>
+		<focalpoint>
+			<clearbutton>Ta bort fokuspunkt</clearbutton>
+		</focalpoint>
 	</language>
 </languages>
