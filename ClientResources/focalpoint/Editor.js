@@ -18,17 +18,20 @@ function (on, declare, aspect, registry, WidgetSet, _Widget, _TemplatedMixin, _W
 		startup: function () {
 			this.initializeFocalPoint();
 		},
-		isValid: function () {
-			if (!this.value || this.value === "" || this.value == undefined || (typeof this.value === "object" && (isNaN(this.value.x) || isNaN(this.value.y)))) {
-				return !this.required;
+		initializeFocalPoint: function () {
+			if (this.hasCoordinates()) {
+				this._setFocalPoint(this.value.x, this.value.y, true);
+			} else {
+				this.focalpoint.className = "empty";
 			}
-			var isValidCoordinatesObject = this.value.x !== undefined &&
-										   this.value.y !== undefined &&
-										   !isNaN(this.value.x) &&
-										   !isNaN(this.value.y) &&
-										   this.value.x !== 0 &&
-										   this.value.y !== 0;
-			return isValidCoordinatesObject;
+			if (this.readOnly) {
+				this.clearbutton.disabled = true;
+				this.focalpoint.className = "empty";
+			}
+			else {
+				this.canvas.addEventListener("click", this.setFocalPoint.bind(this));
+				this.clearbutton.addEventListener("click", this.clearCoordinates.bind(this));
+			}
 		},
 		hasCoordinates: function () {
 			if (!this.isValid() || !this.value || this.valueOf === "" || (typeof this.value === "object" && (isNaN(this.value.x) || isNaN(this.value.y)))) {
@@ -40,42 +43,6 @@ function (on, declare, aspect, registry, WidgetSet, _Widget, _TemplatedMixin, _W
 				   !isNaN(this.value.y) &&
 				   this.value.x !== 0 &&
 				   this.value.y !== 0;
-		},
-		_setValueAttr: function (value) {
-			if (value === this.value) {
-				return;
-			}
-			this._set("value", value);
-			var that = this;
-			this.image.addEventListener("load", function () {
-				that._setFocalPoint(value.x, value.y, true);
-			});
-			if (!value) {
-				this.clearCoordinates();
-				return;
-			}
-		},
-		_onCoordinateChanged: function (x, y) {
-			if (!this._started) {
-				return;
-			}
-			if (x === undefined || y === undefined) {
-				return;
-			}
-			var value = { y: parseFloat(y), x: parseFloat(x) };
-			this._set("value", value);
-			this.onChange(value);
-		},
-		clearCoordinates: function () {
-			this._set("value", null);
-			this._setFocalPoint(50, 50, true);
-			this.focalpoint.className = 'empty';
-			this.onChange(null);
-		},
-		setFocalPoint: function (ev) {
-			var coordinates = this._setFocalPoint(ev.offsetX, ev.offsetY, false);
-			this._onCoordinateChanged(coordinates.x, coordinates.y);
-			this.focalpoint.className = '';
 		},
 		_setFocalPoint: function (x, y, isPercentage) {
 			if (x === undefined || y === undefined) {
@@ -93,21 +60,55 @@ function (on, declare, aspect, registry, WidgetSet, _Widget, _TemplatedMixin, _W
 			var focalPointSize = this.focalpoint.offsetWidth;
 			this.focalpoint.style.left = offsetX - (focalPointSize / 2) + "px";
 			this.focalpoint.style.top = offsetY - (focalPointSize / 2) + "px";
+			this.focalpoint.className = "";
 			return { y: y, x: x };
 		},
-		initializeFocalPoint: function () {
-			if (this.readOnly) {
-				this.clearbutton.disabled = true;
+		setFocalPoint: function (ev) {
+			var coordinates = this._setFocalPoint(ev.offsetX, ev.offsetY, false);
+			this._onCoordinateChanged(coordinates.x, coordinates.y);
+			this.focalpoint.className = "";
+		},
+		_onCoordinateChanged: function (x, y) {
+			if (!this._started) {
 				return;
 			}
-			if (this.hasCoordinates()) {
-				this._setFocalPoint(this.value.x, this.value.y, true);
-			} else {
-				this.focalpoint.className = 'empty';
+			if (x === undefined || y === undefined) {
+				return;
 			}
-			if (!this.readOnly) {
-				this.canvas.addEventListener("click", this.setFocalPoint.bind(this));
-				this.clearbutton.addEventListener("click", this.clearCoordinates.bind(this));
+			var value = { y: parseFloat(y), x: parseFloat(x) };
+			this._set("value", value);
+			this.onChange(value);
+		},
+		clearCoordinates: function () {
+			this._set("value", null);
+			this._setFocalPoint(50, 50, true);
+			this.focalpoint.className = "empty";
+			this.onChange(null);
+		},
+		isValid: function () {
+			if (!this.value || this.value === "" || this.value == undefined || (typeof this.value === "object" && (isNaN(this.value.x) || isNaN(this.value.y)))) {
+				return !this.required;
+			}
+			var isValidCoordinatesObject = this.value.x !== undefined &&
+										   this.value.y !== undefined &&
+										   !isNaN(this.value.x) &&
+										   !isNaN(this.value.y) &&
+										   this.value.x !== 0 &&
+										   this.value.y !== 0;
+			return isValidCoordinatesObject;
+		},
+		_setValueAttr: function (value) {
+			if (value === this.value) {
+				return;
+			}
+			this._set("value", value);
+			var that = this;
+			this.image.addEventListener("load", function () {
+				that._setFocalPoint(value.x, value.y, true);
+			});
+			if (!value) {
+				this.clearCoordinates();
+				return;
 			}
 		}
 	});
