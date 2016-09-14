@@ -1,10 +1,11 @@
 ﻿define(["dojo/on", "dojo/_base/declare", "dojo/aspect", "dijit/registry", "dijit/WidgetSet", "dijit/_Widget", "dijit/_TemplatedMixin", "dijit/_WidgetsInTemplateMixin",
-    "epi/epi", "epi/shell/widget/_ValueRequiredMixin", "epi-cms/_ContentContextMixin", "xstyle/css!./WidgetTemplate.css"],
-function (on, declare, aspect, registry, WidgetSet, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, epi, _ValueRequiredMixin, _ContentContextMixin) {
+    "epi/epi", "epi/shell/widget/_ValueRequiredMixin", "epi-cms/_ContentContextMixin", "epi/i18n!epi/cms/nls/focalpoint", "xstyle/css!./WidgetTemplate.css"],
+function (on, declare, aspect, registry, WidgetSet, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, epi, _ValueRequiredMixin, _ContentContextMixin, resources) {
 	return declare([_Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _ValueRequiredMixin, _ContentContextMixin], {
 		templateString: dojo.cache("focal-point.focalpoint", "WidgetTemplate.html"),
 		imageUrl: null,
 		intermediateChanges: true,
+		resources: resources,
 		value: null,
 		constructor: function () {
 			var context = this.getCurrentContext();
@@ -67,13 +68,19 @@ function (on, declare, aspect, registry, WidgetSet, _Widget, _TemplatedMixin, _W
 		},
 		clearCoordinates: function () {
 			this._set("value", null);
+			this._setFocalPoint(50, 50, true);
+			this.focalpoint.className = 'empty';
 			this.onChange(null);
 		},
 		setFocalPoint: function (ev) {
 			var coordinates = this._setFocalPoint(ev.offsetX, ev.offsetY, false);
 			this._onCoordinateChanged(coordinates.x, coordinates.y);
+			this.focalpoint.className = '';
 		},
 		_setFocalPoint: function (x, y, isPercentage) {
+			if (x === undefined || y === undefined) {
+				return undefined;
+			}
 			var offsetX = x;
 			var offsetY = y;
 			if (isPercentage) {
@@ -90,13 +97,17 @@ function (on, declare, aspect, registry, WidgetSet, _Widget, _TemplatedMixin, _W
 		},
 		initializeFocalPoint: function () {
 			if (this.readOnly) {
+				this.clearbutton.disabled = true;
 				return;
 			}
 			if (this.hasCoordinates()) {
 				this._setFocalPoint(this.value.x, this.value.y, true);
+			} else {
+				this.focalpoint.className = 'empty';
 			}
 			if (!this.readOnly) {
 				this.canvas.addEventListener("click", this.setFocalPoint.bind(this));
+				this.clearbutton.addEventListener("click", this.clearCoordinates.bind(this));
 			}
 		}
 	});
