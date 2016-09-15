@@ -53,3 +53,13 @@ Embedded localizations are provided for Swedish and English. Should you need to 
 				</properties>
 			</imagedata>
 		</contenttypes>
+
+## Release history
+
+### Release 1.0.0
+Initial release.
+
+### Release 1.1.0
+1. Added clear button to remove a focal point in an image
+2. Style changes to show the focal point as greyed out if the iamge doesn't have any focal point set
+3. Changed the ClientEditingClass from dot notation to use Dojo AMD notation.
