@@ -10,8 +10,8 @@ using EPiServer.PlugIn;
 [assembly: AssemblyProduct("ImageResizer.Plugins.EPiFocalPoint")]
 [assembly: ComVisible(false)]
 [assembly: Guid("4206e11f-3084-48b7-9ec3-203d2e5edbb2")]
-[assembly: AssemblyVersion("1.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyVersion("1.1.1.0")]
+[assembly: AssemblyFileVersion("1.1.1.0")]
 [assembly: PlugInSummary(MoreInfoUrl = "<A href='https://github.com/CreunaAB/EPiFocalPoint'>GitHub Repository</A>", License = LicensingMode.Freeware)]
 #if DEBUG
 [assembly: AssemblyConfiguration("Debug")]

@@ -26,5 +26,7 @@
 		<file src="module.config.uninstall.xdt" target="Content\module.config.uninstall.xdt" />
 		<file src="Web.config.install.xdt" target="Content\Web.config.install.xdt" />
 		<file src="Web.config.uninstall.xdt" target="Content\Web.config.uninstall.xdt" />
+    <file src="bin\Release\net46\ImageResizer.Plugins.EPiFocalPoint.dll" target="lib\net46\ImageResizer.Plugins.EPiFocalPoint.dll" />
+    <file src="bin\Release\net452\ImageResizer.Plugins.EPiFocalPoint.dll" target="lib\net452\ImageResizer.Plugins.EPiFocalPoint.dll" />
 	</files>
 </package>
