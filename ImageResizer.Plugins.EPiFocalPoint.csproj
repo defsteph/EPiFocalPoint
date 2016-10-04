@@ -42,7 +42,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release452|AnyCPU'">
     <OutputPath>bin\Release\net452\</OutputPath>
-	<TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -195,6 +195,8 @@
     <Content Include="ClientResources\focalpoint\WidgetTemplate.css" />
     <Content Include="ClientResources\focalpoint\WidgetTemplate.html" />
     <EmbeddedResource Include="Resources\FocalPointCropping.xml" />
+    <None Include="module.config" />
+    <None Include="module.config.transform" />
     <None Include="nuget_pack.bat" />
     <None Include="README.md" />
   </ItemGroup>
@@ -203,8 +205,6 @@
     <None Include="ImageResizer.Plugins.EPiFocalPoint.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <None Include="module.config.install.xdt" />
-    <None Include="module.config.uninstall.xdt" />
     <None Include="packages.config" />
     <None Include="Web.config.install.xdt" />
     <None Include="Web.config.uninstall.xdt" />

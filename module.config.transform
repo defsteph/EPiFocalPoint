@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<module xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <dojo>
+    <paths>
+      <add name="focal-point" path="" />
+    </paths>
+  </dojo>
+</module>
