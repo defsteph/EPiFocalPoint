@@ -186,6 +186,7 @@
     <Compile Include="CropDimensions.cs" />
     <Compile Include="FocalPointEditorDescriptor.cs" />
     <Compile Include="FocalPointImageData.cs" />
+    <Compile Include="IFocalPointImageData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecializedProperties\PropertyFocalPoint.cs" />
     <Compile Include="SpecializedProperties\FocalPoint.cs" />
