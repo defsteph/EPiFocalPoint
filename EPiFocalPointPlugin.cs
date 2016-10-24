@@ -14,7 +14,9 @@ using ImageResizer.Configuration;
 using ImageResizer.Configuration.Xml;
 
 namespace ImageResizer.Plugins.EPiFocalPoint {
-	public class EPiFocalPointPlugin : IPlugin {
+    using EPiServer.Web;
+
+    public class EPiFocalPointPlugin : IPlugin {
 		private readonly UrlResolver urlResolver;
 		private readonly IContentCacheKeyCreator contentCacheKeyCreator;
 		private readonly ISynchronizedObjectInstanceCache cache;
@@ -57,8 +59,11 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 			return !string.IsNullOrWhiteSpace(attributeValue) && bool.Parse(attributeValue);
 		}
 		private void PipelineRewriteDefaults(IHttpModule sender, HttpContext context, IUrlEventArgs e) {
-			ApplyFocalPointCropping(e);
-		}
+            if (EPiServer.Web.Routing.Segments.RequestSegmentContext.CurrentContextMode == ContextMode.Default)
+            {
+                ApplyFocalPointCropping(e);
+            }
+        }
 		private void ApplyFocalPointCropping(IUrlEventArgs urlEventArgs) {
 			var imageFile = urlResolver.Route(new UrlBuilder(urlEventArgs.VirtualPath)) as IFocalPointImageData;
 			if(imageFile?.FocalPoint != null) {
