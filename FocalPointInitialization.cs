@@ -38,12 +38,12 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 			}
 		}
 		private static void SavingImage(object sender, ContentEventArgs e) {
-			var image = e.Content as FocalPointImageData;
+			var image = e.Content as IFocalPointImageData;
 			if(image != null) {
 				SetDimensions(image);
 			}
 		}
-		private static void SetDimensions(FocalPointImageData focalPointImage) {
+		private static void SetDimensions(IFocalPointImageData focalPointImage) {
 			if(!focalPointImage.IsReadOnly && focalPointImage.BinaryData != null) {
 				using(var stream = focalPointImage.BinaryData.OpenRead()) {
 					using(var bitmap = Image.FromStream(stream, false)) {

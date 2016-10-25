@@ -60,7 +60,7 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 			ApplyFocalPointCropping(e);
 		}
 		private void ApplyFocalPointCropping(IUrlEventArgs urlEventArgs) {
-			var imageFile = urlResolver.Route(new UrlBuilder(urlEventArgs.VirtualPath)) as FocalPointImageData;
+			var imageFile = urlResolver.Route(new UrlBuilder(urlEventArgs.VirtualPath)) as IFocalPointImageData;
 			if(imageFile?.FocalPoint != null) {
 				var resizeSettings = GetResizeSettingsFromQueryString(urlEventArgs.QueryString);
 				if(!ShouldCrop(imageFile, resizeSettings)) {
@@ -86,7 +86,7 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 		private bool HasPreset(string preset) {
 			return !string.IsNullOrWhiteSpace(preset) && (defaults.ContainsKey(preset) || settings.ContainsKey(preset));
 		}
-		private static bool ShouldCrop(FocalPointImageData focalPointImageData, ResizeSettings resizeSettings) {
+		private static bool ShouldCrop(IFocalPointImageData focalPointImageData, ResizeSettings resizeSettings) {
 			if(resizeSettings == null || resizeSettings.Count <= 0) {
 				return false;
 			}
@@ -95,7 +95,7 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 		private static string GetCacheKeyForResize(ContentReference contentLink, NameValueCollection resizeSettings) {
 			return $"crop-{contentLink.ID}_{contentLink.WorkID}-{contentLink.ProviderName}:{string.Join("-", resizeSettings.AllKeys)}";
 		}
-		private static CropDimensions GetCropDimensions(FocalPointImageData focalPointImageData, ResizeSettings resizeSettings) {
+		private static CropDimensions GetCropDimensions(IFocalPointImageData focalPointImageData, ResizeSettings resizeSettings) {
 			var sourceWidth = focalPointImageData.OriginalWidth ?? 1;
 			var sourceHeight = focalPointImageData.OriginalHeight ?? 1;
 			var focalPointY = (int)Math.Round(sourceHeight * (focalPointImageData.FocalPoint.Y / 100));

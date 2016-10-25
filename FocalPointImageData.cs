@@ -6,7 +6,8 @@ using EPiServer.DataAnnotations;
 using ImageResizer.Plugins.EPiFocalPoint.SpecializedProperties;
 
 namespace ImageResizer.Plugins.EPiFocalPoint {
-	public abstract class FocalPointImageData : ImageData {
+	public abstract class FocalPointImageData : ImageData, IFocalPointImageData
+	{
 		[BackingType(typeof(PropertyFocalPoint))]
 		public virtual FocalPoint FocalPoint { get; set; }
 
