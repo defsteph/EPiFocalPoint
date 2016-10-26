@@ -197,7 +197,7 @@
     <Content Include="ClientResources\focalpoint\WidgetTemplate.html" />
     <EmbeddedResource Include="Resources\FocalPointCropping.xml" />
     <None Include="module.config.transform" />
-    <None Include="nuget_pack.bat" />
+    <None Include="nuget_pack.ps1" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>

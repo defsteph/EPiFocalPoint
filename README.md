@@ -3,6 +3,8 @@
 ##Prerequisites
 Make sure your Image Media ContentTypes inherit from ```ImageResizer.Plugins.EPiFocalPoint.FocalPointImageData```, or implements ```ImageResizer.Plugins.EPiFocalPoint.IFocalPointData``` if inheritance is inconvenient or undesired.
 
+Creating NuGet packages requires Visual Studio 2015
+
 ##Usage
 Edit the image in AllPropertiesView, and place the red dot where you want it in the image.
 
