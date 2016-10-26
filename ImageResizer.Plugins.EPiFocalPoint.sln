@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageResizer.Plugins.EPiFocalPoint", "ImageResizer.Plugins.EPiFocalPoint.csproj", "{4206E11F-3084-48B7-9EC3-203D2E5EDBB2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release452|Any CPU = Release452|Any CPU
+		Release46|Any CPU = Release46|Any CPU
+		Release461|Any CPU = Release461|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4206E11F-3084-48B7-9EC3-203D2E5EDBB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4206E11F-3084-48B7-9EC3-203D2E5EDBB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4206E11F-3084-48B7-9EC3-203D2E5EDBB2}.Release452|Any CPU.ActiveCfg = Release452|Any CPU
+		{4206E11F-3084-48B7-9EC3-203D2E5EDBB2}.Release452|Any CPU.Build.0 = Release452|Any CPU
+		{4206E11F-3084-48B7-9EC3-203D2E5EDBB2}.Release46|Any CPU.ActiveCfg = Release46|Any CPU
+		{4206E11F-3084-48B7-9EC3-203D2E5EDBB2}.Release46|Any CPU.Build.0 = Release46|Any CPU
+		{4206E11F-3084-48B7-9EC3-203D2E5EDBB2}.Release461|Any CPU.ActiveCfg = Release461|Any CPU
+		{4206E11F-3084-48B7-9EC3-203D2E5EDBB2}.Release461|Any CPU.Build.0 = Release461|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

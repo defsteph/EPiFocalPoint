@@ -186,6 +186,7 @@
     <Compile Include="CropDimensions.cs" />
     <Compile Include="FocalPointEditorDescriptor.cs" />
     <Compile Include="FocalPointImageData.cs" />
+    <Compile Include="IFocalPointData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecializedProperties\PropertyFocalPoint.cs" />
     <Compile Include="SpecializedProperties\FocalPoint.cs" />
@@ -195,7 +196,6 @@
     <Content Include="ClientResources\focalpoint\WidgetTemplate.css" />
     <Content Include="ClientResources\focalpoint\WidgetTemplate.html" />
     <EmbeddedResource Include="Resources\FocalPointCropping.xml" />
-    <None Include="module.config" />
     <None Include="module.config.transform" />
     <None Include="nuget_pack.bat" />
     <None Include="README.md" />

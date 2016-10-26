@@ -60,18 +60,18 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 			ApplyFocalPointCropping(e);
 		}
 		private void ApplyFocalPointCropping(IUrlEventArgs urlEventArgs) {
-			var imageFile = urlResolver.Route(new UrlBuilder(urlEventArgs.VirtualPath)) as FocalPointImageData;
-			if(imageFile?.FocalPoint != null) {
+			var focalPointData = urlResolver.Route(new UrlBuilder(urlEventArgs.VirtualPath)) as IFocalPointData;
+			if(focalPointData?.FocalPoint != null) {
 				var resizeSettings = GetResizeSettingsFromQueryString(urlEventArgs.QueryString);
-				if(!ShouldCrop(imageFile, resizeSettings)) {
+				if(!ShouldCrop(focalPointData, resizeSettings)) {
 					return;
 				}
-				Logger.Information($"Altering resize parameters for {imageFile.Name} based on focal point.");
-				var cacheKey = GetCacheKeyForResize(imageFile.ContentLink, resizeSettings);
+				Logger.Information($"Altering resize parameters for {focalPointData.Name} based on focal point.");
+				var cacheKey = GetCacheKeyForResize(focalPointData.ContentLink, resizeSettings);
 				var cropParameters = cache.Get(cacheKey) as string;
 				if(cropParameters == null) {
-					cropParameters = GetCropDimensions(imageFile, resizeSettings).ToString();
-					cache.Insert(cacheKey, cropParameters, GetEvictionPolicy(imageFile.ContentLink));
+					cropParameters = GetCropDimensions(focalPointData, resizeSettings).ToString();
+					cache.Insert(cacheKey, cropParameters, GetEvictionPolicy(focalPointData.ContentLink));
 				}
 				urlEventArgs.QueryString.Add("crop", cropParameters);
 			}
@@ -86,20 +86,20 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 		private bool HasPreset(string preset) {
 			return !string.IsNullOrWhiteSpace(preset) && (defaults.ContainsKey(preset) || settings.ContainsKey(preset));
 		}
-		private static bool ShouldCrop(FocalPointImageData focalPointImageData, ResizeSettings resizeSettings) {
+		private static bool ShouldCrop(IFocalPointData focalPointData, ResizeSettings resizeSettings) {
 			if(resizeSettings == null || resizeSettings.Count <= 0) {
 				return false;
 			}
-			return !(resizeSettings.Mode == FitMode.Max && resizeSettings.Width >= (focalPointImageData.OriginalWidth ?? 1) && resizeSettings.Height >= (focalPointImageData.OriginalHeight ?? 1));
+			return !(resizeSettings.Mode == FitMode.Max && resizeSettings.Width >= (focalPointData.OriginalWidth ?? 1) && resizeSettings.Height >= (focalPointData.OriginalHeight ?? 1));
 		}
 		private static string GetCacheKeyForResize(ContentReference contentLink, NameValueCollection resizeSettings) {
 			return $"crop-{contentLink.ID}_{contentLink.WorkID}-{contentLink.ProviderName}:{string.Join("-", resizeSettings.AllKeys)}";
 		}
-		private static CropDimensions GetCropDimensions(FocalPointImageData focalPointImageData, ResizeSettings resizeSettings) {
-			var sourceWidth = focalPointImageData.OriginalWidth ?? 1;
-			var sourceHeight = focalPointImageData.OriginalHeight ?? 1;
-			var focalPointY = (int)Math.Round(sourceHeight * (focalPointImageData.FocalPoint.Y / 100));
-			var focalPointX = (int)Math.Round(sourceWidth * (focalPointImageData.FocalPoint.X / 100));
+		private static CropDimensions GetCropDimensions(IFocalPointData focalPointData, ResizeSettings resizeSettings) {
+			var sourceWidth = focalPointData.OriginalWidth ?? 1;
+			var sourceHeight = focalPointData.OriginalHeight ?? 1;
+			var focalPointY = (int)Math.Round(sourceHeight * (focalPointData.FocalPoint.Y / 100));
+			var focalPointX = (int)Math.Round(sourceWidth * (focalPointData.FocalPoint.X / 100));
 			double targetAspectRatio = 1.0f;
 			if(resizeSettings != null) {
 				//Calculate target aspect ration from resizeSettings.
@@ -111,8 +111,8 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 			int x2;
 			int y2;
 			if(targetAspectRatio.Equals(sourceAspectRatio)) {
-				x2 = focalPointImageData.OriginalWidth ?? 0;
-				y2 = focalPointImageData.OriginalHeight ?? 0;
+				x2 = focalPointData.OriginalWidth ?? 0;
+				y2 = focalPointData.OriginalHeight ?? 0;
 			} else if(targetAspectRatio > sourceAspectRatio) {
 				// the requested aspect ratio is wider than the source image
 				var newHeight = (int)Math.Floor(sourceWidth / targetAspectRatio);

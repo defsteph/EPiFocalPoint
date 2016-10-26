@@ -38,22 +38,22 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 			}
 		}
 		private static void SavingImage(object sender, ContentEventArgs e) {
-			var image = e.Content as FocalPointImageData;
-			if(image != null) {
-				SetDimensions(image);
+			var focalPointData = e.Content as IFocalPointData;
+			if(focalPointData != null) {
+				SetDimensions(focalPointData);
 			}
 		}
-		private static void SetDimensions(FocalPointImageData focalPointImage) {
-			if(!focalPointImage.IsReadOnly && focalPointImage.BinaryData != null) {
-				using(var stream = focalPointImage.BinaryData.OpenRead()) {
+		private static void SetDimensions(IFocalPointData focalPointData) {
+			if(!focalPointData.IsReadOnly && focalPointData.BinaryData != null) {
+				using(var stream = focalPointData.BinaryData.OpenRead()) {
 					using(var bitmap = Image.FromStream(stream, false)) {
-						if(focalPointImage.OriginalHeight != bitmap.Height) {
-							Logger.Information($"Setting height for {focalPointImage.Name} to {bitmap.Height}.");
-							focalPointImage.OriginalHeight = bitmap.Height;
+						if(focalPointData.OriginalHeight != bitmap.Height) {
+							Logger.Information($"Setting height for {focalPointData.Name} to {bitmap.Height}.");
+							focalPointData.OriginalHeight = bitmap.Height;
 						}
-						if(focalPointImage.OriginalWidth != bitmap.Width) {
-							Logger.Information($"Setting width for {focalPointImage.Name} to {bitmap.Width}.");
-							focalPointImage.OriginalWidth = bitmap.Width;
+						if(focalPointData.OriginalWidth != bitmap.Width) {
+							Logger.Information($"Setting width for {focalPointData.Name} to {bitmap.Width}.");
+							focalPointData.OriginalWidth = bitmap.Width;
 						}
 					}
 				}
