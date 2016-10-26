@@ -1,9 +1,9 @@
 #Focal point based cropping for EPiServer using ImageResizing.NET
 
 ##Prerequisites
-Make sure your Image Media ContentTypes inherit from ```ImageResizer.Plugins.EPiFocalPoint.FocalPointImageData```, or implements ```ImageResizer.Plugins.EPiFocalPoint.IFocalPointData``` if inheritance is inconvenient or undesired.
+Make sure your Image Media ContentTypes inherit from ```ImageResizer.Plugins.EPiFocalPoint.FocalPointImageData```, or implements ```ImageResizer.Plugins.EPiFocalPoint.IFocalPointData``` if inheritance is inconvenient or undesired. Remember to decorate the FocalPoint property with ```[BackingType(typeof(PropertyFocalPoint))]``` if you choose to implement the interface only.
 
-Creating NuGet packages requires Visual Studio 2015
+Creating NuGet packages requires Visual Studio 2015.
 
 ##Usage
 Edit the image in AllPropertiesView, and place the red dot where you want it in the image.
@@ -69,3 +69,7 @@ Initial release.
 ### Release 1.1.1
 1. Added support for .NET 4.6 and 4.5.2
 2. Updated module.config to be created if not existing in target project
+
+### Release 1.2.0
+1. Added an interface if inheritance isn't an option.
+2. Added support for CMS 10.

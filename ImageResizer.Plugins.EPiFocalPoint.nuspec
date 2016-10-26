@@ -14,8 +14,8 @@
 		<projectUrl>https://github.com/CreunaAB/EPiFocalPoint</projectUrl>
 		<iconUrl>https://avatars3.githubusercontent.com/u/1013949?v=3&amp;s=200</iconUrl>
 		<dependencies>
-			<dependency id="EPiServer.CMS.Core" version="[9.7.2, 10.0)" />
-			<dependency id="EPiServer.Framework" version="[9.7.2, 10.0)" />
+			<dependency id="EPiServer.CMS.Core" version="[9.7.2, 11.0)" />
+			<dependency id="EPiServer.Framework" version="[9.7.2, 11.0)" />
 			<dependency id="ImageResizer" version="4.0.1" />
 			<dependency id="ImageResizer.Plugins.EPiServerBlobReader" version="4.0.3" />
 			<dependency id="Newtonsoft.Json" version="5.0.8" />
