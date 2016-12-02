@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Text;
 using System.Web;
 
 using EPiServer;
@@ -93,7 +94,11 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 			return !(resizeSettings.Mode == FitMode.Max && resizeSettings.Width >= (focalPointData.OriginalWidth ?? 1) && resizeSettings.Height >= (focalPointData.OriginalHeight ?? 1));
 		}
 		private static string GetCacheKeyForResize(ContentReference contentLink, NameValueCollection resizeSettings) {
-			return $"crop-{contentLink.ID}_{contentLink.WorkID}-{contentLink.ProviderName}:{string.Join("-", resizeSettings.AllKeys)}";
+			var resizeSettingsCacheKey = new StringBuilder();
+			foreach(var key in resizeSettings.AllKeys) {
+				resizeSettingsCacheKey.AppendFormat("{0}:{1}", key, resizeSettings[key]);
+			}
+			return $"crop-{contentLink.ID}_{contentLink.WorkID}-{contentLink.ProviderName}-{resizeSettingsCacheKey}";
 		}
 		private static CropDimensions GetCropDimensions(IFocalPointData focalPointData, ResizeSettings resizeSettings) {
 			var sourceWidth = focalPointData.OriginalWidth ?? 1;
