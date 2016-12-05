@@ -9,7 +9,6 @@ using EPiServer.Framework.Initialization;
 using EPiServer.Framework.Localization;
 using EPiServer.Framework.Localization.XmlResources;
 using EPiServer.Logging;
-using EPiServer.ServiceLocation;
 
 namespace ImageResizer.Plugins.EPiFocalPoint {
 	[InitializableModule, ModuleDependency(typeof(FrameworkInitialization))]
