@@ -12,7 +12,7 @@ using EPiServer.Logging;
 using EPiServer.ServiceLocation;
 
 namespace ImageResizer.Plugins.EPiFocalPoint {
-	[InitializableModule, ModuleDependency(typeof(ServiceContainerInitialization))]
+	[InitializableModule, ModuleDependency(typeof(FrameworkInitialization))]
 	public class FocalPointInitialization : IInitializableModule {
 		private const string LocalizationProviderName = "FocalPointLocalizations";
 		private bool eventsAttached;
