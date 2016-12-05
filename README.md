@@ -73,3 +73,7 @@ Initial release.
 ### Release 1.2.0
 1. Added an interface if inheritance isn't an option.
 2. Added support for CMS 10.
+
+### Release 1.2.1
+1. Fixes issue when generating cache keys.
+2. FIxes issue with initialization of localization provider.
