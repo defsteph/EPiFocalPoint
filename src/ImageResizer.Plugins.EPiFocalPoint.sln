@@ -9,8 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{FB714F5C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{13EBCC6E-F05E-43F0-8279-14E03868C94F}"
 	ProjectSection(SolutionItems) = preProject
-		..\Tools\nuget.exe = ..\Tools\nuget.exe
-		..\Tools\nuget_pack.ps1 = ..\Tools\nuget_pack.ps1
+		ImageResizer.Plugins.EPiFocalPoint\nuget.exe = ImageResizer.Plugins.EPiFocalPoint\nuget.exe
+		ImageResizer.Plugins.EPiFocalPoint\nuget_pack.ps1 = ImageResizer.Plugins.EPiFocalPoint\nuget_pack.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{4D191718-2D74-4FDC-86C0-ABB4853B8739}"
@@ -55,6 +55,5 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{13EBCC6E-F05E-43F0-8279-14E03868C94F} = {FB714F5C-8DBC-4547-BE58-D239FA80D720}
-		{4D191718-2D74-4FDC-86C0-ABB4853B8739} = {FB714F5C-8DBC-4547-BE58-D239FA80D720}
 	EndGlobalSection
 EndGlobal
