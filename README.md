@@ -77,3 +77,6 @@ Initial release.
 ### Release 1.2.1
 1. Fixes issue when generating cache keys.
 2. FIxes issue with initialization of localization provider.
+
+### Release 1.3.0
+1. Optimized reading of image dimensions for faster processing of image data.

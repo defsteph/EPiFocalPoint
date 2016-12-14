@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageResizer.Plugins.EPiFocalPoint", "ImageResizer.Plugins.EPiFocalPoint\ImageResizer.Plugins.EPiFocalPoint.csproj", "{4206E11F-3084-48B7-9EC3-203D2E5EDBB2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{FB714F5C-8DBC-4547-BE58-D239FA80D720}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{13EBCC6E-F05E-43F0-8279-14E03868C94F}"
+	ProjectSection(SolutionItems) = preProject
+		..\Tools\nuget.exe = ..\Tools\nuget.exe
+		..\Tools\nuget_pack.ps1 = ..\Tools\nuget_pack.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{4D191718-2D74-4FDC-86C0-ABB4853B8739}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageResizer.Plugins.EPiFocalPoint.Tests", "ImageResizer.Plugins.EPiFocalPoint.Tests\ImageResizer.Plugins.EPiFocalPoint.Tests.csproj", "{183E815F-DF65-43FF-A49A-33440BD56D43}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Release452|Any CPU = Release452|Any CPU
+		Release46|Any CPU = Release46|Any CPU
+		Release461|Any CPU = Release461|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4206E11F-3084-48B7-9EC3-203D2E5EDBB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4206E11F-3084-48B7-9EC3-203D2E5EDBB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4206E11F-3084-48B7-9EC3-203D2E5EDBB2}.Release|Any CPU.ActiveCfg = Release461|Any CPU
+		{4206E11F-3084-48B7-9EC3-203D2E5EDBB2}.Release|Any CPU.Build.0 = Release461|Any CPU
+		{4206E11F-3084-48B7-9EC3-203D2E5EDBB2}.Release452|Any CPU.ActiveCfg = Release452|Any CPU
+		{4206E11F-3084-48B7-9EC3-203D2E5EDBB2}.Release452|Any CPU.Build.0 = Release452|Any CPU
+		{4206E11F-3084-48B7-9EC3-203D2E5EDBB2}.Release46|Any CPU.ActiveCfg = Release46|Any CPU
+		{4206E11F-3084-48B7-9EC3-203D2E5EDBB2}.Release46|Any CPU.Build.0 = Release46|Any CPU
+		{4206E11F-3084-48B7-9EC3-203D2E5EDBB2}.Release461|Any CPU.ActiveCfg = Release461|Any CPU
+		{4206E11F-3084-48B7-9EC3-203D2E5EDBB2}.Release461|Any CPU.Build.0 = Release461|Any CPU
+		{183E815F-DF65-43FF-A49A-33440BD56D43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{183E815F-DF65-43FF-A49A-33440BD56D43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{183E815F-DF65-43FF-A49A-33440BD56D43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{183E815F-DF65-43FF-A49A-33440BD56D43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{183E815F-DF65-43FF-A49A-33440BD56D43}.Release452|Any CPU.ActiveCfg = Release|Any CPU
+		{183E815F-DF65-43FF-A49A-33440BD56D43}.Release452|Any CPU.Build.0 = Release|Any CPU
+		{183E815F-DF65-43FF-A49A-33440BD56D43}.Release46|Any CPU.ActiveCfg = Release|Any CPU
+		{183E815F-DF65-43FF-A49A-33440BD56D43}.Release46|Any CPU.Build.0 = Release|Any CPU
+		{183E815F-DF65-43FF-A49A-33440BD56D43}.Release461|Any CPU.ActiveCfg = Release|Any CPU
+		{183E815F-DF65-43FF-A49A-33440BD56D43}.Release461|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{13EBCC6E-F05E-43F0-8279-14E03868C94F} = {FB714F5C-8DBC-4547-BE58-D239FA80D720}
+		{4D191718-2D74-4FDC-86C0-ABB4853B8739} = {FB714F5C-8DBC-4547-BE58-D239FA80D720}
+	EndGlobalSection
+EndGlobal
