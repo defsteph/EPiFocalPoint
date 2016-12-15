@@ -4,3 +4,4 @@
 *.suo
 *.user
 *.DotSettings
+src/ImageResizer.Plugins.EPiFocalPoint.Tests/TestData/Benchmarks/

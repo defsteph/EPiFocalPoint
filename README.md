@@ -56,6 +56,12 @@ Embedded localizations are provided for Swedish and English. Should you need to 
 			</imagedata>
 		</contenttypes>
 
+##Tests
+There are a few tests for the ImageDimensionService, more will be written as the need arises.
+
+There are a few performance tests written to validate the usage of the ImageDimensionService, they are written using a simple StopWatch, but if you want Memory information they will need to be run using dotMemory.
+To benchmark performance on ayour specific number of files, drop them in the TestData/Benchmarks directory, and run the benchmark tests. As requirements differ, you can test with your amount of images, and see if this will work for you.
+
 ## Release history
 
 ### Release 1.0.0
