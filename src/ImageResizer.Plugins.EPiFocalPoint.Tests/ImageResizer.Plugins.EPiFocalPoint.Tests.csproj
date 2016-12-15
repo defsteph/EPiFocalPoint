@@ -75,7 +75,7 @@
   <ItemGroup>
     <Compile Include="Benchmarks\Internal\Services\BenchmarkFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Benchmarks\Internal\Services\ImageDimensionServiceTests.cs" />
+    <Compile Include="Benchmarks\Internal\Services\ImageDimensionServiceBenchmarks.cs" />
     <Compile Include="Unit\Internal\Services\ImageDimensionServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
