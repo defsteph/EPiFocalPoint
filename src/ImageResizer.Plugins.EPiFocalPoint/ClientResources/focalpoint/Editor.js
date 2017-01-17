@@ -79,7 +79,8 @@ function (on, declare, aspect, registry, WidgetSet, _Widget, _TemplatedMixin, _W
 			this._set("value", value);
 			this.onChange(value);
 		},
-		clearCoordinates: function () {
+		clearCoordinates: function (e) {
+			e.preventDefault();
 			this._set("value", null);
 			this._setFocalPoint(50, 50, true);
 			this.focalpoint.className = "empty";
