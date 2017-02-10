@@ -91,3 +91,6 @@ Initial release.
 1. Fixes issue with clearing the Focal Point (PR: #8)
 2. Performance improvements when doing crop lookups
 3. Marked UrlResolver in EPiFocalPointPlugin as obsolete.
+
+### Release 1.3.2
+1. Fixes issue with images in edit mode introduced in 1.3.1
