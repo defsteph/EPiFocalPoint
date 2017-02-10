@@ -86,3 +86,8 @@ Initial release.
 
 ### Release 1.3.0
 1. Optimized reading of image dimensions for faster processing of image data.
+
+### Release 1.3.1
+1. Fixes issue with clearing the Focal Point (PR: #8)
+2. Performance improvements when doing crop lookups
+3. Marked UrlResolver in EPiFocalPointPlugin as obsolete.
