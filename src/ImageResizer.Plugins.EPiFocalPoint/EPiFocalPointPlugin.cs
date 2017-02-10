@@ -70,6 +70,9 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 			stopWatch.Start();
 #endif
 			var resizeSettings = GetResizeSettingsFromQueryString(urlEventArgs.QueryString);
+			if(resizeSettings == null) {
+				return;
+			}
 			var cacheKey = GetCacheKeyForUrl(urlEventArgs, resizeSettings);
 			var cropParameters = this.cache.Get(cacheKey) as string;
 			if(cropParameters == null) {
