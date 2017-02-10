@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Text;
 using System.Web;
 
-using EPiServer;
 using EPiServer.Core;
 using EPiServer.Framework.Cache;
 using EPiServer.Logging;
@@ -16,16 +16,20 @@ using ImageResizer.Configuration.Xml;
 
 namespace ImageResizer.Plugins.EPiFocalPoint {
 	public class EPiFocalPointPlugin : IPlugin {
-		private readonly UrlResolver urlResolver;
 		private readonly IContentCacheKeyCreator contentCacheKeyCreator;
 		private readonly ISynchronizedObjectInstanceCache cache;
 		private static readonly ILogger Logger = LogManager.GetLogger();
 		private readonly Dictionary<string, ResizeSettings> defaults = new Dictionary<string, ResizeSettings>(StringComparer.OrdinalIgnoreCase);
 		private readonly Dictionary<string, ResizeSettings> settings = new Dictionary<string, ResizeSettings>(StringComparer.OrdinalIgnoreCase);
 		private bool onlyAllowPresets;
-		public EPiFocalPointPlugin() : this(ServiceLocator.Current.GetInstance<UrlResolver>(), ServiceLocator.Current.GetInstance<IContentCacheKeyCreator>(), ServiceLocator.Current.GetInstance<ISynchronizedObjectInstanceCache>()) { }
+		public EPiFocalPointPlugin() : this(ServiceLocator.Current.GetInstance<IContentCacheKeyCreator>(), ServiceLocator.Current.GetInstance<ISynchronizedObjectInstanceCache>()) { }
+
+		[Obsolete("The UrlResolver is no longer used.")]
 		public EPiFocalPointPlugin(UrlResolver urlResolver, IContentCacheKeyCreator contentCacheKeyCreator, ISynchronizedObjectInstanceCache cache) {
-			this.urlResolver = urlResolver;
+			this.contentCacheKeyCreator = contentCacheKeyCreator;
+			this.cache = cache;
+		}
+		public EPiFocalPointPlugin(IContentCacheKeyCreator contentCacheKeyCreator, ISynchronizedObjectInstanceCache cache) {
 			this.contentCacheKeyCreator = contentCacheKeyCreator;
 			this.cache = cache;
 		}
@@ -61,44 +65,65 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 			ApplyFocalPointCropping(e);
 		}
 		private void ApplyFocalPointCropping(IUrlEventArgs urlEventArgs) {
-			var focalPointData = urlResolver.Route(new UrlBuilder(urlEventArgs.VirtualPath)) as IFocalPointData;
-			if(focalPointData?.FocalPoint != null) {
-				var resizeSettings = GetResizeSettingsFromQueryString(urlEventArgs.QueryString);
-				if(!ShouldCrop(focalPointData, resizeSettings)) {
-					return;
+#if DEBUG
+			var stopWatch = new Stopwatch();
+			stopWatch.Start();
+#endif
+			var resizeSettings = GetResizeSettingsFromQueryString(urlEventArgs.QueryString);
+			var cacheKey = GetCacheKeyForUrl(urlEventArgs, resizeSettings);
+			var cropParameters = this.cache.Get(cacheKey) as string;
+			if(cropParameters == null) {
+				Logger.Debug($"Crop parameters not found in cache for '{urlEventArgs.VirtualPath}'.");
+				var currentContent = ServiceLocator.Current.GetInstance<ContentRouteHelper>().Content;
+				if(currentContent != null) {
+					var evictionPolicy = GetEvictionPolicy(currentContent.ContentLink);
+					var focalPointData = currentContent as IFocalPointData;
+					if(focalPointData?.FocalPoint != null && ShouldCrop(focalPointData, resizeSettings)) {
+						Logger.Debug($"Altering resize parameters for {focalPointData.Name} based on focal point.");
+						cropParameters = GetCropDimensions(focalPointData, resizeSettings).ToString();
+						this.cache.Insert(cacheKey, cropParameters, evictionPolicy);
+					} else {
+						Logger.Debug($"No focal point set for '{currentContent.Name}'.");
+						this.cache.Insert(cacheKey, string.Empty, evictionPolicy);
+					}
 				}
-				Logger.Information($"Altering resize parameters for {focalPointData.Name} based on focal point.");
-				var cacheKey = GetCacheKeyForResize(focalPointData.ContentLink, resizeSettings);
-				var cropParameters = cache.Get(cacheKey) as string;
-				if(cropParameters == null) {
-					cropParameters = GetCropDimensions(focalPointData, resizeSettings).ToString();
-					cache.Insert(cacheKey, cropParameters, GetEvictionPolicy(focalPointData.ContentLink));
-				}
+			}
+			if(!string.IsNullOrWhiteSpace(cropParameters)) {
 				urlEventArgs.QueryString.Add("crop", cropParameters);
 			}
+#if DEBUG
+			stopWatch.Stop();
+			Logger.Debug($"{nameof(ApplyFocalPointCropping)} for {urlEventArgs.VirtualPath} took {stopWatch.ElapsedMilliseconds}ms.");
+#endif
 		}
 		private ResizeSettings GetResizeSettingsFromQueryString(NameValueCollection queryString) {
 			var preset = queryString["preset"];
 			if(HasPreset(preset)) {
-				return settings.ContainsKey(preset) && settings[preset] != null ? settings[preset] : defaults[preset];
+				return this.settings.ContainsKey(preset) && this.settings[preset] != null ? this.settings[preset] : this.defaults[preset];
 			}
-			return onlyAllowPresets ? null : new ResizeSettings(queryString);
+			return this.onlyAllowPresets ? null : new ResizeSettings(queryString);
 		}
 		private bool HasPreset(string preset) {
 			return !string.IsNullOrWhiteSpace(preset) && (defaults.ContainsKey(preset) || settings.ContainsKey(preset));
+		}
+		private static string GetCacheKeyForUrl(IUrlEventArgs urlEventArgs, ResizeSettings resizeSettings) {
+			var keyBuilder = new StringBuilder();
+			keyBuilder.Append("focalpoint:");
+			keyBuilder.Append(urlEventArgs.VirtualPath);
+			keyBuilder.Append(":");
+			foreach(var key in resizeSettings.AllKeys) {
+				keyBuilder.AppendFormat("{0}:{1}", key, resizeSettings[key]);
+			}
+			return keyBuilder.ToString();
+		}
+		private CacheEvictionPolicy GetEvictionPolicy(ContentReference contentLink) {
+			return new CacheEvictionPolicy(new[] { contentCacheKeyCreator.CreateCommonCacheKey(contentLink) });
 		}
 		private static bool ShouldCrop(IFocalPointData focalPointData, ResizeSettings resizeSettings) {
 			if(resizeSettings == null || resizeSettings.Count <= 0) {
 				return false;
 			}
 			return !(resizeSettings.Mode == FitMode.Max && resizeSettings.Width >= (focalPointData.OriginalWidth ?? 1) && resizeSettings.Height >= (focalPointData.OriginalHeight ?? 1));
-		}
-		private static string GetCacheKeyForResize(ContentReference contentLink, NameValueCollection resizeSettings) {
-			var resizeSettingsCacheKey = new StringBuilder();
-			foreach(var key in resizeSettings.AllKeys) {
-				resizeSettingsCacheKey.AppendFormat("{0}:{1}", key, resizeSettings[key]);
-			}
-			return $"crop-{contentLink.ID}_{contentLink.WorkID}-{contentLink.ProviderName}-{resizeSettingsCacheKey}";
 		}
 		private static CropDimensions GetCropDimensions(IFocalPointData focalPointData, ResizeSettings resizeSettings) {
 			var sourceWidth = focalPointData.OriginalWidth ?? 1;
@@ -138,9 +163,6 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 				}
 			}
 			return new CropDimensions { X1 = x1, X2 = x2, Y1 = y1, Y2 = y2 };
-		}
-		private CacheEvictionPolicy GetEvictionPolicy(ContentReference contentLink) {
-			return new CacheEvictionPolicy(new[] { contentCacheKeyCreator.CreateCommonCacheKey(contentLink) });
 		}
 		public bool Uninstall(Config c) {
 			c.Plugins.remove_plugin(this);
