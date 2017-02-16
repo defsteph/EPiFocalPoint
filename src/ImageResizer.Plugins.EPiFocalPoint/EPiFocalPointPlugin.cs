@@ -69,30 +69,34 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 			var stopWatch = new Stopwatch();
 			stopWatch.Start();
 #endif
-			var resizeSettings = GetResizeSettingsFromQueryString(urlEventArgs.QueryString);
-			if(resizeSettings == null) {
-				return;
-			}
-			var cacheKey = GetCacheKeyForUrl(urlEventArgs, resizeSettings);
-			var cropParameters = this.cache.Get(cacheKey) as string;
-			if(cropParameters == null) {
-				Logger.Debug($"Crop parameters not found in cache for '{urlEventArgs.VirtualPath}'.");
-				var currentContent = ServiceLocator.Current.GetInstance<ContentRouteHelper>().Content;
-				if(currentContent != null) {
-					var evictionPolicy = GetEvictionPolicy(currentContent.ContentLink);
-					var focalPointData = currentContent as IFocalPointData;
-					if(focalPointData?.FocalPoint != null && ShouldCrop(focalPointData, resizeSettings)) {
-						Logger.Debug($"Altering resize parameters for {focalPointData.Name} based on focal point.");
-						cropParameters = GetCropDimensions(focalPointData, resizeSettings).ToString();
-						this.cache.Insert(cacheKey, cropParameters, evictionPolicy);
-					} else {
-						Logger.Debug($"No focal point set for '{currentContent.Name}'.");
-						this.cache.Insert(cacheKey, string.Empty, evictionPolicy);
+			try {
+				var resizeSettings = GetResizeSettingsFromQueryString(urlEventArgs.QueryString);
+				if(resizeSettings == null) {
+					return;
+				}
+				var cacheKey = GetCacheKeyForUrl(urlEventArgs, resizeSettings);
+				var cropParameters = this.cache.Get(cacheKey) as string;
+				if(cropParameters == null) {
+					Logger.Debug($"Crop parameters not found in cache for '{urlEventArgs.VirtualPath}'.");
+					var currentContent = ServiceLocator.Current.GetInstance<ContentRouteHelper>().Content;
+					if(currentContent != null) {
+						var evictionPolicy = GetEvictionPolicy(currentContent.ContentLink);
+						var focalPointData = currentContent as IFocalPointData;
+						if(focalPointData?.FocalPoint != null && ShouldCrop(focalPointData, resizeSettings)) {
+							Logger.Debug($"Altering resize parameters for {focalPointData.Name} based on focal point.");
+							cropParameters = GetCropDimensions(focalPointData, resizeSettings).ToString();
+							this.cache.Insert(cacheKey, cropParameters, evictionPolicy);
+						} else {
+							Logger.Debug($"No focal point set for '{currentContent.Name}'.");
+							this.cache.Insert(cacheKey, string.Empty, evictionPolicy);
+						}
 					}
 				}
-			}
-			if(!string.IsNullOrWhiteSpace(cropParameters)) {
-				urlEventArgs.QueryString.Add("crop", cropParameters);
+				if(!string.IsNullOrWhiteSpace(cropParameters)) {
+					urlEventArgs.QueryString.Add("crop", cropParameters);
+				}
+			} catch(Exception ex) {
+				Logger.Critical("A critical error occured when trying to get focal point data.", ex);
 			}
 #if DEBUG
 			stopWatch.Stop();
