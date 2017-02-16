@@ -94,3 +94,6 @@ Initial release.
 
 ### Release 1.3.2
 1. Fixes issue with images in edit mode introduced in 1.3.1
+
+### Release 1.3.3
+1. Wrapped focal point lookup in try/catch to prevent underlying errors when application is under high load.
