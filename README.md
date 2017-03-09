@@ -94,3 +94,9 @@ Initial release.
 
 ### Release 1.3.2
 1. Fixes issue with images in edit mode introduced in 1.3.1
+
+### Release 1.3.3
+1. Wrapped focal point lookup in try/catch to prevent errors under high load
+
+### Release 1.3.4
+1. Fixed an issue when applying focal point and using FitMode.Max or scaling up. A focal point should not be applied if images aren't cropped, so when scaling, the plugin shouldn't do anything.
