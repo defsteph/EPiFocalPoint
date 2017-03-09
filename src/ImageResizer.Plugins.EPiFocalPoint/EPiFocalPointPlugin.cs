@@ -82,7 +82,7 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 					if(currentContent != null) {
 						var evictionPolicy = GetEvictionPolicy(currentContent.ContentLink);
 						var focalPointData = currentContent as IFocalPointData;
-						if(focalPointData?.FocalPoint != null && ShouldCrop(focalPointData, resizeSettings)) {
+						if(focalPointData?.FocalPoint != null && ShouldApplyFocalPoint(focalPointData, resizeSettings)) {
 							Logger.Debug($"Altering resize parameters for {focalPointData.Name} based on focal point.");
 							cropParameters = GetCropDimensions(focalPointData, resizeSettings).ToString();
 							this.cache.Insert(cacheKey, cropParameters, evictionPolicy);
@@ -126,11 +126,19 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 		private CacheEvictionPolicy GetEvictionPolicy(ContentReference contentLink) {
 			return new CacheEvictionPolicy(new[] { contentCacheKeyCreator.CreateCommonCacheKey(contentLink) });
 		}
-		private static bool ShouldCrop(IFocalPointData focalPointData, ResizeSettings resizeSettings) {
+		private static bool ShouldApplyFocalPoint(IFocalPointData focalPointData, ResizeSettings resizeSettings) {
 			if(resizeSettings == null || resizeSettings.Count <= 0) {
 				return false;
 			}
-			return !(resizeSettings.Mode == FitMode.Max && resizeSettings.Width >= (focalPointData.OriginalWidth ?? 1) && resizeSettings.Height >= (focalPointData.OriginalHeight ?? 1));
+			if(resizeSettings.Mode == FitMode.Max) { // If using fitmode Max, the image won't be cropped, only resized, and focal point serves no purpose.
+				return false;
+			}
+			var targetWidthIsLargerThanOriginal = resizeSettings.Width >= (focalPointData.OriginalWidth ?? 1);
+			var targetHeightIsLargerThanOriginal = resizeSettings.Height >= (focalPointData.OriginalHeight ?? 1);
+			if(targetWidthIsLargerThanOriginal && targetHeightIsLargerThanOriginal) { // If the target is bigger in both dimensions, it will result in a scaling operation, and the focal point serves no purpose.
+				return false;
+			}
+			return true;
 		}
 		private static CropDimensions GetCropDimensions(IFocalPointData focalPointData, ResizeSettings resizeSettings) {
 			var sourceWidth = focalPointData.OriginalWidth ?? 1;
@@ -139,7 +147,7 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 			var focalPointX = (int)Math.Round(sourceWidth * (focalPointData.FocalPoint.X / 100));
 			double targetAspectRatio = 1.0f;
 			if(resizeSettings != null) {
-				//Calculate target aspect ration from resizeSettings.
+				//Calculate target aspect ratio from resizeSettings.
 				targetAspectRatio = (double)resizeSettings.Width / resizeSettings.Height;
 			}
 			var sourceAspectRatio = (double)sourceWidth / sourceHeight;
