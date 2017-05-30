@@ -2,7 +2,7 @@
     "epi/epi", "epi/shell/widget/_ValueRequiredMixin", "epi-cms/_ContentContextMixin", "epi/i18n!epi/cms/nls/focalpoint", "xstyle/css!./WidgetTemplate.css"],
 function (on, declare, aspect, registry, WidgetSet, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, epi, _ValueRequiredMixin, _ContentContextMixin, resources) {
 	return declare([_Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _ValueRequiredMixin, _ContentContextMixin], {
-		templateString: dojo.cache("focal-point.focalpoint", "WidgetTemplate.html"),
+		templateString: dojo.cache("focal-point", "WidgetTemplate.html"),
 		imageUrl: null,
 		intermediateChanges: true,
 		resources: resources,

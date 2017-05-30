@@ -2,7 +2,7 @@
 <module xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
   <dojo>
     <paths>
-      <add name="focal-point" path="" />
+      <add name="focal-point" path="focalpoint" />
     </paths>
   </dojo>
 </module>
