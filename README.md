@@ -1,14 +1,14 @@
-#Focal point based cropping for EPiServer using ImageResizing.NET
+# Focal point based cropping for EPiServer using ImageResizing.NET
 
-##Prerequisites
+## Prerequisites
 Make sure your Image Media ContentTypes inherit from ```ImageResizer.Plugins.EPiFocalPoint.FocalPointImageData```, or implements ```ImageResizer.Plugins.EPiFocalPoint.IFocalPointData``` if inheritance is inconvenient or undesired. Remember to decorate the FocalPoint property with ```[BackingType(typeof(PropertyFocalPoint))]``` if you choose to implement the interface only.
 
 Creating NuGet packages requires Visual Studio 2015.
 
-##Usage
+## Usage
 Edit the image in AllPropertiesView, and place the red dot where you want it in the image.
 
-##What is installed?
+## What is installed?
 1. An ImageResizing.NET plugin is installed in web.config
 
 		<resizer>
@@ -22,19 +22,19 @@ Edit the image in AllPropertiesView, and place the red dot where you want it in 
 		<module>
 			<dojo>
 				<paths>
-					<add name="focal-point" path="" />
+					<add name="focal-point" path="focalpoint" />
 				</paths>
 			</dojo>
 		</module>
 
 
-##How it works
+## How it works
 The coordinates of the focal point are stored as a ```ImageResizer.Plugins.EPiFocalPoint.SpecializedProperties.FocalPoint``` property on the image. 
 The image dimensions are also stored in the properties ```OriginalWidth``` and ```OriginalHeight``` whenever the image is saved.
 
 When the image is requested, the ```crop``` parameter is added "under the hood", and then ImageResizing does its thing.
 
-##Additional localizations
+## Additional localizations
 Embedded localizations are provided for Swedish and English. Should you need to localize in other languages, you can do so by adding XML translations thusly:
 
 		<contenttypes>
@@ -56,7 +56,7 @@ Embedded localizations are provided for Swedish and English. Should you need to 
 			</imagedata>
 		</contenttypes>
 
-##Tests
+## Tests
 There are a few tests for the ImageDimensionService, more will be written as the need arises.
 
 There are a few performance tests written to validate the usage of the ImageDimensionService, they are written using a simple StopWatch, but if you want Memory information they will need to be run using dotMemory.
@@ -100,3 +100,6 @@ Initial release.
 
 ### Release 1.3.4
 1. Fixed an issue when applying focal point and using FitMode.Max or scaling up. A focal point should not be applied if images aren't cropped, so when scaling, the plugin shouldn't do anything.
+
+### Release 1.3.5
+1. Fixed an issue with having an empty path in module.config causing the generated path to have double slashes (//) in the url.
