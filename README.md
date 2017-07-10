@@ -103,3 +103,6 @@ Initial release.
 
 ### Release 1.3.5
 1. Fixed an issue with having an empty path in module.config causing the generated path to have double slashes (//) in the url.
+
+### Release 1.3.6
+1. Fixed an issue with initialization of the language resources.
