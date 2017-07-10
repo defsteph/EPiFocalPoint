@@ -17,16 +17,23 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 		private const string LocalizationProviderName = "FocalPointLocalizations";
 		private bool eventsAttached;
 		private static readonly ILogger Logger = LogManager.GetLogger();
+		private static LocalizationService LocalizationService;
 		public void Initialize(InitializationEngine context) {
-			InitializeLocalizations(context);
+			LocalizationService = context.Locate.Advanced.GetInstance<LocalizationService>() as ProviderBasedLocalizationService;
+			context.InitComplete += this.InitComplete;
 			InitializeEventHooks(context);
 		}
-		private static void InitializeLocalizations(InitializationEngine context) {
-			var localizationService = context.Locate.Advanced.GetInstance<LocalizationService>() as ProviderBasedLocalizationService;
-			if(localizationService != null) {
+
+		private void InitComplete(object sender, EventArgs e) {
+			InitializeLocalizations();
+		}
+
+		private static void InitializeLocalizations() {
+			var providerBasedLocalizationService = LocalizationService as ProviderBasedLocalizationService;
+			if(providerBasedLocalizationService != null) {
 				var localizationProviderInitializer = new EmbeddedXmlLocalizationProviderInitializer();
 				var localizationProvider = localizationProviderInitializer.GetInitializedProvider(LocalizationProviderName, typeof(FocalPointInitialization).Assembly);
-				localizationService.Providers.Insert(0, localizationProvider);
+				providerBasedLocalizationService.Providers.Insert(0, localizationProvider);
 			}
 		}
 		private void InitializeEventHooks(InitializationEngine context) {
