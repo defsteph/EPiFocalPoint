@@ -113,7 +113,6 @@ namespace ImageResizer.Plugins.EPiFocalPoint.Internal.Services {
 					binaryReader.ReadBytes(chunkLength - 2);
 				}
 			}
-			throw new ArgumentException(ErrorMessage);
 			return Size.Empty;
 		}
 	}
