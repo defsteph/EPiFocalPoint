@@ -106,3 +106,6 @@ Initial release.
 
 ### Release 1.3.6
 1. Fixed an issue with initialization of the language resources.
+
+### Release 1.4.0
+1. Added support for progressive JPEGs (PR: #14)
