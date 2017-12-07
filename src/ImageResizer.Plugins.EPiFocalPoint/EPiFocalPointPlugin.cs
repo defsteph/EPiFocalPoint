@@ -24,11 +24,6 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 		private bool onlyAllowPresets;
 		public EPiFocalPointPlugin() : this(ServiceLocator.Current.GetInstance<IContentCacheKeyCreator>(), ServiceLocator.Current.GetInstance<ISynchronizedObjectInstanceCache>()) { }
 
-		[Obsolete("The UrlResolver is no longer used.")]
-		public EPiFocalPointPlugin(UrlResolver urlResolver, IContentCacheKeyCreator contentCacheKeyCreator, ISynchronizedObjectInstanceCache cache) {
-			this.contentCacheKeyCreator = contentCacheKeyCreator;
-			this.cache = cache;
-		}
 		public EPiFocalPointPlugin(IContentCacheKeyCreator contentCacheKeyCreator, ISynchronizedObjectInstanceCache cache) {
 			this.contentCacheKeyCreator = contentCacheKeyCreator;
 			this.cache = cache;
@@ -78,7 +73,7 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 				var cropParameters = this.cache.Get(cacheKey) as string;
 				if(cropParameters == null) {
 					Logger.Debug($"Crop parameters not found in cache for '{urlEventArgs.VirtualPath}'.");
-					var currentContent = ServiceLocator.Current.GetInstance<ContentRouteHelper>().Content;
+					var currentContent = ServiceLocator.Current.GetInstance<IContentRouteHelper>().Content;
 					if(currentContent != null) {
 						var evictionPolicy = GetEvictionPolicy(currentContent.ContentLink);
 						var focalPointData = currentContent as IFocalPointData;

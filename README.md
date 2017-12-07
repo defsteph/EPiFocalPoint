@@ -109,3 +109,6 @@ Initial release.
 
 ### Release 1.4.0
 1. Added support for progressive JPEGs (PR: #14)
+
+### Release 2.0.0
+1. Added support for EPiServer CMS 11

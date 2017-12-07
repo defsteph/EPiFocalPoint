@@ -8,24 +8,23 @@
 		<owners>$author$</owners>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>$description$</description>
-		<copyright>Copyright Creuna AB 2016</copyright>
+		<copyright>Copyright Creuna AB 2017</copyright>
 		<tags>EPiServerModulePackage EPiServer ImageResizer</tags>
-		<summary>Adds focal point selection to images that inherit from ImageResizer.Plugins.EPiFocalPoint.FocalPointImageData, and modifies crops to include the selected focal point. Supports both presets and width/height parameters.</summary>
+		<summary>Adds focal point selection to images and modifies crops to include the selected focal point. Supports both presets and width/height parameters.</summary>
 		<projectUrl>https://github.com/CreunaAB/EPiFocalPoint</projectUrl>
 		<iconUrl>https://avatars3.githubusercontent.com/u/1013949?v=3&amp;s=200</iconUrl>
 		<dependencies>
-			<dependency id="EPiServer.CMS.Core" version="[9.7.2, 11.0)" />
-			<dependency id="EPiServer.Framework" version="[9.7.2, 11.0)" />
+			<dependency id="EPiServer.CMS.Core" version="[11.0.1, 12.0)" />
+			<dependency id="EPiServer.Framework" version="[11.0.1, 12.0)" />
+			<dependency id="EPiServer.CMS.UI.Core" version="[11.0.1, 12.0)" />
 			<dependency id="ImageResizer" version="4.0.1" />
-			<dependency id="ImageResizer.Plugins.EPiServerBlobReader" version="4.0.3" />
-			<dependency id="Newtonsoft.Json" version="5.0.8" />
+			<dependency id="ImageResizer.Plugins.EPiServerBlobReader" version="7.0.0" />
+			<dependency id="Newtonsoft.Json" version="9.0.1" />
 		</dependencies>
 	</metadata>
 	<files>
-    <file src="module.config.transform" target="Content\module.config.transform" />
+	    <file src="module.config.transform" target="Content\module.config.transform" />
 		<file src="Web.config.install.xdt" target="Content\Web.config.install.xdt" />
 		<file src="Web.config.uninstall.xdt" target="Content\Web.config.uninstall.xdt" />
-    <file src="bin\Release\net46\ImageResizer.Plugins.EPiFocalPoint.dll" target="lib\net46\ImageResizer.Plugins.EPiFocalPoint.dll" />
-    <file src="bin\Release\net452\ImageResizer.Plugins.EPiFocalPoint.dll" target="lib\net452\ImageResizer.Plugins.EPiFocalPoint.dll" />
 	</files>
 </package>
