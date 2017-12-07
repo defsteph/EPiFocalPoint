@@ -11,7 +11,6 @@ namespace ImageResizer.Plugins.EPiFocalPoint.Internal.Services {
 		private static readonly ISize Invalid = new InvalidSize();
 		private static readonly ILogger Logger = LogManager.GetLogger();
 
-		private const string ErrorMessage = "Could not recognize image format.";
 		private static readonly Dictionary<byte[], Func<BinaryReader, Size>> ImageFormatDecoders = new Dictionary
 			<byte[], Func<BinaryReader, Size>>()
 			{
@@ -30,7 +29,8 @@ namespace ImageResizer.Plugins.EPiFocalPoint.Internal.Services {
 					try {
 						var size = GetDimensions(binaryReader);
 						if(size == Size.Empty) {
-							using(var image = Image.FromStream(stream, false, false)) {
+							stream.Position = 0;
+							using (var image = Image.FromStream(stream, false, false)) {
 								size = image.Size;
 							}
 						}
@@ -100,7 +100,7 @@ namespace ImageResizer.Plugins.EPiFocalPoint.Internal.Services {
 			while(binaryReader.ReadByte() == 0xff) {
 				var marker = binaryReader.ReadByte();
 				var chunkLength = ReadLittleEndianInt16(binaryReader);
-				if(marker == 0xc0) {
+				if(marker == 0xc0 || marker == 0xc2) {
 					binaryReader.ReadByte();
 					int height = ReadLittleEndianInt16(binaryReader);
 					int width = ReadLittleEndianInt16(binaryReader);
@@ -113,7 +113,7 @@ namespace ImageResizer.Plugins.EPiFocalPoint.Internal.Services {
 					binaryReader.ReadBytes(chunkLength - 2);
 				}
 			}
-			throw new ArgumentException(ErrorMessage);
+			return Size.Empty;
 		}
 	}
 }

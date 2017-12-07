@@ -133,6 +133,9 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 			if(resizeSettings.Mode == FitMode.Max) { // If using fitmode Max, the image won't be cropped, only resized, and focal point serves no purpose.
 				return false;
 			}
+			if(resizeSettings.Width < 0 && resizeSettings.Height < 0) {
+				return false;
+			}
 			var targetWidthIsLargerThanOriginal = resizeSettings.Width >= (focalPointData.OriginalWidth ?? 1);
 			var targetHeightIsLargerThanOriginal = resizeSettings.Height >= (focalPointData.OriginalHeight ?? 1);
 			if(targetWidthIsLargerThanOriginal && targetHeightIsLargerThanOriginal) { // If the target is bigger in both dimensions, it will result in a scaling operation, and the focal point serves no purpose.
@@ -145,12 +148,16 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 			var sourceHeight = focalPointData.OriginalHeight ?? 1;
 			var focalPointY = (int)Math.Round(sourceHeight * (focalPointData.FocalPoint.Y / 100));
 			var focalPointX = (int)Math.Round(sourceWidth * (focalPointData.FocalPoint.X / 100));
+			var sourceAspectRatio = (double)sourceWidth / sourceHeight;
 			double targetAspectRatio = 1.0f;
 			if(resizeSettings != null) {
 				//Calculate target aspect ratio from resizeSettings.
-				targetAspectRatio = (double)resizeSettings.Width / resizeSettings.Height;
+				if (resizeSettings.Width > 0 && resizeSettings.Height > 0) {
+					targetAspectRatio = (double) resizeSettings.Width / resizeSettings.Height;
+				} else {
+					targetAspectRatio = sourceAspectRatio;
+				}
 			}
-			var sourceAspectRatio = (double)sourceWidth / sourceHeight;
 			var x1 = 0;
 			var y1 = 0;
 			int x2;
