@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using ImageResizer.Plugins.EPiFocalPoint.Internal.Services;
 using Shouldly;
@@ -33,6 +32,7 @@ namespace ImageResizer.Plugins.EPiFocalPoint.Tests.Unit.Internal.Services {
 		[InlineData("bmp")]
 		[InlineData("gif")]
 		[InlineData("jpg")]
+		[InlineData("jpeg")]
 		[InlineData("png")]
 		[InlineData("tif")]
 		public void GetDimensions_StreamContainsFileOfType_ReturnsCorrectSize(string extension) {

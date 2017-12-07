@@ -12,7 +12,7 @@ namespace ImageResizer.Plugins.EPiFocalPoint.Internal.Services {
 		private static readonly ILogger Logger = LogManager.GetLogger();
 
 		private static readonly Dictionary<byte[], Func<BinaryReader, Size>> ImageFormatDecoders = new Dictionary
-			<byte[], Func<BinaryReader, Size>>()
+			<byte[], Func<BinaryReader, Size>>
 			{
 				{new byte[] {0x42, 0x4D}, DecodeBitmap},
 				{new byte[] {0x47, 0x49, 0x46, 0x38, 0x37, 0x61}, DecodeGif},

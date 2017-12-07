@@ -98,6 +98,7 @@
     <Content Include="TestData\Dimensions\5472x3648.jpg" />
     <Content Include="TestData\FileTypes\TestImage.bmp" />
     <Content Include="TestData\FileTypes\TestImage.gif" />
+    <Content Include="TestData\FileTypes\TestImage.jpeg" />
     <Content Include="TestData\FileTypes\TestImage.jpg" />
     <Content Include="TestData\FileTypes\TestImage.png" />
     <Content Include="TestData\FileTypes\TestImage.tif" />
