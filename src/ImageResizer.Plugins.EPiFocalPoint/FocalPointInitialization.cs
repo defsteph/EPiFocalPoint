@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 using EPiServer;
 using EPiServer.Core;
@@ -20,24 +19,22 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 		private static LocalizationService LocalizationService;
 		public void Initialize(InitializationEngine context) {
 			LocalizationService = context.Locate.Advanced.GetInstance<LocalizationService>() as ProviderBasedLocalizationService;
-			context.InitComplete += this.InitComplete;
+			context.InitComplete += InitComplete;
 			InitializeEventHooks(context);
 		}
-
-		private void InitComplete(object sender, EventArgs e) {
+		private static void InitComplete(object sender, EventArgs e) {
 			InitializeLocalizations();
 		}
-
 		private static void InitializeLocalizations() {
 			var providerBasedLocalizationService = LocalizationService as ProviderBasedLocalizationService;
-			if(providerBasedLocalizationService != null) {
+			if (providerBasedLocalizationService != null) {
 				var localizationProviderInitializer = new EmbeddedXmlLocalizationProviderInitializer();
 				var localizationProvider = localizationProviderInitializer.GetInitializedProvider(LocalizationProviderName, typeof(FocalPointInitialization).Assembly);
-				providerBasedLocalizationService.Providers.Insert(0, localizationProvider);
+				providerBasedLocalizationService.InsertProvider(localizationProvider);
 			}
 		}
 		private void InitializeEventHooks(InitializationEngine context) {
-			if(!eventsAttached) {
+			if (!eventsAttached) {
 				var contentEvents = context.Locate.Advanced.GetInstance<IContentEvents>();
 				contentEvents.CreatingContent += SavingImage;
 				contentEvents.SavingContent += SavingImage;
@@ -46,28 +43,28 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 		}
 		private static void SavingImage(object sender, ContentEventArgs e) {
 			var focalPointData = e.Content as IFocalPointData;
-			if(focalPointData != null) {
+			if (focalPointData != null) {
 				SetDimensions(focalPointData);
 			}
 		}
 		private static void SetDimensions(IFocalPointData focalPointData) {
-			if(!focalPointData.IsReadOnly && focalPointData.BinaryData != null) {
-				using(var stream = focalPointData.BinaryData.OpenRead()) {
+			if (!focalPointData.IsReadOnly && focalPointData.BinaryData != null) {
+				using (var stream = focalPointData.BinaryData.OpenRead()) {
 					try {
 						var size = ImageDimensionService.GetDimensions(stream);
-						if(size.IsValid) {
-							if(focalPointData.OriginalHeight != size.Height) {
+						if (size.IsValid) {
+							if (focalPointData.OriginalHeight != size.Height) {
 								Logger.Information($"Setting height for {focalPointData.Name} to {size.Height}.");
 								focalPointData.OriginalHeight = size.Height;
 							}
-							if(focalPointData.OriginalWidth != size.Width) {
+							if (focalPointData.OriginalWidth != size.Width) {
 								Logger.Information($"Setting width for {focalPointData.Name} to {size.Width}.");
 								focalPointData.OriginalWidth = size.Width;
 							}
 						} else {
 							Logger.Information($"Could not read size of {focalPointData.Name}.");
 						}
-					} catch(Exception ex) {
+					} catch (Exception ex) {
 						Logger.Error($"Could not read size of {focalPointData.Name}, data might be corrupt.", ex);
 					}
 				}
@@ -79,9 +76,10 @@ namespace ImageResizer.Plugins.EPiFocalPoint {
 		}
 		private static void UninitializeLocalizations(InitializationEngine context) {
 			var localizationService = context.Locate.Advanced.GetInstance<LocalizationService>() as ProviderBasedLocalizationService;
-			var localizationProvider = localizationService?.Providers.FirstOrDefault(p => p.Name.Equals(LocalizationProviderName, StringComparison.Ordinal));
-			if(localizationProvider != null) {
-				localizationService.Providers.Remove(localizationProvider);
+			try {
+				localizationService?.RemoveProvider(LocalizationProviderName);
+			} catch (Exception ex) {
+				Logger.Error("Error uninitializing localizations.", ex);
 			}
 		}
 		private void UninitializeEventHooks(InitializationEngine context) {
