@@ -8,11 +8,11 @@
 		<owners>$author$</owners>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>$description$</description>
-		<copyright>Copyright Creuna AB 2017</copyright>
+		<copyright>Copyright 2017</copyright>
 		<tags>EPiServerModulePackage EPiServer ImageResizer</tags>
 		<summary>Adds focal point selection to images and modifies crops to include the selected focal point. Supports both presets and width/height parameters.</summary>
-		<projectUrl>https://github.com/CreunaAB/EPiFocalPoint</projectUrl>
-		<iconUrl>https://avatars3.githubusercontent.com/u/1013949?v=3&amp;s=200</iconUrl>
+		<projectUrl>https://github.com/defsteph/EPiFocalPoint</projectUrl>
+		<iconUrl>https://github.com/defsteph/EPiFocalPoint/raw/master/focalpoint.png</iconUrl>
 		<dependencies>
 			<dependency id="EPiServer.CMS.Core" version="[11.0.1, 12.0)" />
 			<dependency id="EPiServer.Framework" version="[11.0.1, 12.0)" />
