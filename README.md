@@ -112,3 +112,7 @@ Initial release.
 
 ### Release 2.0.0
 1. Added support for EPiServer CMS 11
+
+
+### Release 2.0.1
+1. Removed Creuna trademark and updated icon and URL for project to reflect the change in maintainer.
