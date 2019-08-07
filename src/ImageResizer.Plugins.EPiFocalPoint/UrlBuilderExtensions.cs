@@ -53,7 +53,7 @@ namespace ImageResizer.Plugins.EPiFocalPoint
                 imageData = ServiceLocator.Current.GetInstance<IContentLoader>().Get<ImageData>(content.ContentLink);
             }
             catch (TypeMismatchException) {
-                imageData = null;
+                throw new ArgumentNullException(nameof(target));
             }
             return imageData as IFocalPointData;
         }
