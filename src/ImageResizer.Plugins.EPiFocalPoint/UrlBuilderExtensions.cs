@@ -39,7 +39,7 @@ namespace ImageResizer.Plugins.EPiFocalPoint
                 throw new ArgumentNullException(nameof(target));
             }
 
-            var content = UrlResolver.Current.Route(new UrlBuilder(target.ToString()));
+            var content = UrlResolver.Current.Route(target);
             if (content == null) {
                 throw new ArgumentNullException(nameof(target));
             }
