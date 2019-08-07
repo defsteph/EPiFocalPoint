@@ -179,6 +179,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FocalPointDataExtensions.cs" />
     <Compile Include="FocalPointInitialization.cs" />
     <Compile Include="EPiFocalPointPlugin.cs" />
     <Compile Include="CropDimensions.cs" />
@@ -192,6 +193,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecializedProperties\PropertyFocalPoint.cs" />
     <Compile Include="SpecializedProperties\FocalPoint.cs" />
+    <Compile Include="UrlBuilderExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientResources\focalpoint\Editor.js" />
