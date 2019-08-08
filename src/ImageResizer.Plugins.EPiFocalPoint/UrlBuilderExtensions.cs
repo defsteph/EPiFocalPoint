@@ -81,7 +81,7 @@ namespace ImageResizer.Plugins.EPiFocalPoint
         /// <param name="defaultWidth">Default image size</param>
         /// <param name="htmlAttributes">Html attributes: new {@class="class-name"}</param>
         /// <param name="widthSizes">Different dimensions for selecting closest size"</param>
-        /// <example>@Html.ResizeImage(Model.CurrentPage.Image).FitMode(FitMode.Crop).UseFocalPoint(800, null, 1600, 1200, 1000, 800)</example>
+        /// <example>@Html.ResizeImage(Model.CurrentPage.Image).UseFocalPoint(800, null, 1600, 1200, 1000, 800)</example>
         /// <returns>MvcHtmlString</returns>
         public static MvcHtmlString UseFocalPoint(this UrlBuilder target, int defaultWidth, object htmlAttributes, params int[] widthSizes) {
             // Idea borrowed from https://www.creuna.com/fi/blogit/responsive-images-with-episerver-and-imageresizer/
@@ -89,17 +89,11 @@ namespace ImageResizer.Plugins.EPiFocalPoint
 
             var focalPointData = target.GetFocalPointData();
             var originalImageWidth = focalPointData?.OriginalWidth ?? 1;
-            var originalImageHeight = focalPointData?.OriginalHeight ?? 1;
 
-            var scaleFactor = defaultWidth / originalImageWidth;
-            var imageHeight = (int) Math.Round((double) originalImageHeight * scaleFactor);
-
-            var urlBuilder = new UrlBuilder(target)
-                .Add(Width, $"{defaultWidth}")
-                .Add(Height, $"{imageHeight}");
+            var urlBuilder = new UrlBuilder(target).Add(Width, $"{defaultWidth}");
             var resizeSettings = new ResizeSettings(urlBuilder.QueryCollection);
 
-            if (focalPointData?.FocalPoint != null && focalPointData.ShouldApplyFocalPoint(resizeSettings)) {
+            if (focalPointData?.FocalPoint != null) {
                 urlBuilder.Add(Crop, CropDimensions.Parse(focalPointData, resizeSettings).ToString());
             }
 
@@ -116,15 +110,10 @@ namespace ImageResizer.Plugins.EPiFocalPoint
                         continue;
                     }
 
-                    scaleFactor = width / originalImageWidth;
-                    imageHeight = (int) Math.Round((double) originalImageHeight * scaleFactor);
-
-                    urlBuilder = new UrlBuilder(target)
-                        .Add(Width, $"{width}")
-                        .Add(Height, $"{imageHeight}");
+                    urlBuilder = new UrlBuilder(target).Add(Width, $"{width}");
                     resizeSettings = new ResizeSettings(urlBuilder.QueryCollection);
 
-                    if (focalPointData?.FocalPoint != null && focalPointData.ShouldApplyFocalPoint(resizeSettings)) {
+                    if (focalPointData?.FocalPoint != null) {
                         urlBuilder.Add(Crop, CropDimensions.Parse(focalPointData, resizeSettings).ToString());
                     }
                     srcSet.Add($"{urlBuilder} {width}{Width}");
@@ -135,12 +124,10 @@ namespace ImageResizer.Plugins.EPiFocalPoint
                 }
 
                 if (pushOriginal) {
-                    urlBuilder = new UrlBuilder(target)
-                        .Add(Width, $"{originalImageWidth}")
-                        .Add(Height, $"{originalImageHeight}");
-
+                    urlBuilder = new UrlBuilder(target).Add(Width, $"{originalImageWidth}");
                     resizeSettings = new ResizeSettings(urlBuilder.QueryCollection);
-                    if (focalPointData?.FocalPoint != null && focalPointData.ShouldApplyFocalPoint(resizeSettings)) {
+
+                    if (focalPointData?.FocalPoint != null) {
                         urlBuilder.Add(Crop, CropDimensions.Parse(focalPointData, resizeSettings).ToString());
                     }
                     srcSet.Add($"{urlBuilder} {originalImageWidth}{Width}");
