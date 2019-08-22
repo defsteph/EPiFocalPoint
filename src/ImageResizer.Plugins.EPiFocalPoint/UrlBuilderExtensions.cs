@@ -34,6 +34,15 @@ namespace ImageResizer.Plugins.EPiFocalPoint
             return target;
         }
 
+        private static ImageData GetImageData(ContentReference contentReference) {
+            try {
+                return ServiceLocator.Current.GetInstance<IContentLoader>().Get<ImageData>(contentReference);
+            }
+            catch (TypeMismatchException) {
+                return null;
+            }
+        }
+
         private static IFocalPointData GetFocalPointData(this UrlBuilder target) {
             if (target == null || target.IsEmpty) {
                 throw new ArgumentNullException(nameof(target));
@@ -41,6 +50,11 @@ namespace ImageResizer.Plugins.EPiFocalPoint
 
             var content = UrlResolver.Current.Route(target);
             if (content == null) {
+                var targetPath = target.Path.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
+                if (targetPath.Length == 2 && int.TryParse(targetPath[1], out var contentId)) {
+                    return GetImageData(new ContentReference(contentId)) as IFocalPointData;
+                }
+
                 throw new ArgumentNullException(nameof(target));
             }
 
@@ -48,14 +62,7 @@ namespace ImageResizer.Plugins.EPiFocalPoint
                 throw new ArgumentNullException(nameof(target));
             }
 
-            ImageData imageData;
-            try {
-                imageData = ServiceLocator.Current.GetInstance<IContentLoader>().Get<ImageData>(content.ContentLink);
-            }
-            catch (TypeMismatchException) {
-                throw new ArgumentNullException(nameof(target));
-            }
-            return imageData as IFocalPointData;
+            return GetImageData(content.ContentLink) as IFocalPointData;
         }
 
         /// <summary>
